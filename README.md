@@ -10,6 +10,12 @@ Enter the pinned development environment:
 nix develop
 ```
 
+Launch the flake-managed VS Code with Java and Nix language support:
+
+```sh
+code .
+```
+
 Run the tests:
 
 ```sh

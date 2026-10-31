@@ -7,9 +7,25 @@
     { self, nixpkgs }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       jdk = pkgs.jdk25;
       maven = pkgs.maven.override { jdk_headless = pkgs.jdk25_headless; };
+
+      vscode = pkgs.vscode-with-extensions.override {
+        vscodeExtensions = with pkgs.vscode-extensions; [
+          bbenoist.nix
+          jnoortheen.nix-ide
+          redhat.java
+          vscjava.vscode-java-debug
+          vscjava.vscode-java-dependency
+          vscjava.vscode-java-pack
+          vscjava.vscode-java-test
+          vscjava.vscode-maven
+        ];
+      };
 
       aoc2026 = maven.buildMavenPackage {
         pname = "aoc2026";
@@ -42,6 +58,7 @@
         packages = [
           jdk
           maven
+          vscode
         ];
 
         shellHook = ''
