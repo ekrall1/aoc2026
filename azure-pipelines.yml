@@ -9,20 +9,6 @@ pr:
       - '*'
 
 jobs:
-  - job: test
-    displayName: "Run test checks"
-    pool:
-      name: Default
-    variables:
-      BASH_ENV: /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-      NIX_CONFIG: extra-experimental-features = nix-command flakes
-    steps:
-      - checkout: self
-
-      - script: |
-          nix flake check
-        displayName: "Run nix flake check"
-
   - job: build
     displayName: "Build"
     dependsOn: test
@@ -38,3 +24,16 @@ jobs:
           nix build
         displayName: "Build project"
 
+  - job: test
+    displayName: "Run test checks"
+    pool:
+      name: Default
+    variables:
+      BASH_ENV: /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+      NIX_CONFIG: extra-experimental-features = nix-command flakes
+    steps:
+      - checkout: self
+
+      - script: |
+          nix flake check
+        displayName: "Run nix flake check"
